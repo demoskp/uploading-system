@@ -1,0 +1,191 @@
+openapi: 3.0.0
+info:
+  title: Geomiq quotes
+  version: '1.0'
+  contact:
+    name: Demos
+    email: demoskp@hotmail.com
+  license:
+    name: 'MIT '
+  description: Geomiq API for quotes
+servers:
+  - url: 'http://localhost:3000/api'
+paths:
+  /quote/submit:
+    post:
+      summary: ''
+      operationId: post-api-quote-submit
+      responses:
+        '201':
+          description: Created
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+        '422':
+          description: Unprocessable Entity (WebDAV)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+              examples:
+                Example 1:
+                  value:
+                    errors:
+                      name: The name field is required.
+                      email: The email field is required.
+                      phone: The phone field is required.
+                example-2:
+                  value:
+                    errors:
+                      part: The part field is required.
+      description: Create a quote lead
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                phone:
+                  type: string
+                more_info:
+                  type: string
+                part:
+                  type: string
+                  format: binary
+              required:
+                - name
+                - email
+                - phone
+                - part
+            examples:
+              Example:
+                value:
+                  name: CustomerName
+                  email: customer@example.com
+                  phone: '07706347654'
+                  more_info: I would like to order 200 of them.
+                  part: exampleModel.slt
+        description: ''
+    parameters: []
+  /quotes:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: {}
+              examples:
+                example-1:
+                  value:
+                    data:
+                      - name: Customer1
+                        email: customer1@example.com
+                        phone: '123456789'
+                        more_info: Example of more info
+                        part: 487623874.stl
+                      - name: Customer2
+                        email: customer1@example.com
+                        phone: '123456789'
+                        more_info: Example of more info
+                        part: 685736458.stl
+                      - name: Customer3
+                        email: customer1@example.com
+                        phone: '123456789'
+                        more_info: Example of more info
+                        part: 846382.stl
+                      - name: Customer4
+                        email: customer1@example.com
+                        phone: '123456789'
+                        more_info: Example of more info
+                        part: 38462387.stl
+                      - name: Customer5
+                        email: customer1@example.com
+                        phone: '123456789'
+                        more_info: Example of more info
+                        part: 4836732.stl
+      operationId: get-quotes
+      description: Fetch all quotes (for backend use)
+  '/quotes/{quoteId}':
+    parameters:
+      - schema:
+          type: integer
+        name: quoteId
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    required:
+                      - name
+                      - email
+                      - phone
+                      - part
+                    properties:
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      phone:
+                        type: string
+                      more_info:
+                        type: string
+                      part:
+                        type: string
+                required:
+                  - data
+              examples:
+                example-1:
+                  value:
+                    data:
+                      name: Customer1
+                      email: customer1@example.com
+                      phone: '123456789'
+                      more_info: Example of more info
+                      part: 487623874.stl
+        '422':
+          description: Unprocessable Entity (WebDAV)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items: {}
+              examples:
+                example-1:
+                  value:
+                    errors:
+                      quoteId: Quote 10 not found.
+      operationId: get-quotes-quoteId
+      description: Fetch a specific quote (For backend use)
+components:
+  schemas: {}
+  securitySchemes: {}
